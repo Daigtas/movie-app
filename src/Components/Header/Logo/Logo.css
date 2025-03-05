@@ -1,0 +1,22 @@
+.logo h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.logo-movie {
+  color: #f44336;
+}
+
+.logo-app {
+  color: #ffffff;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .logo h1 {
+    font-size: 20px;
+  }
+}

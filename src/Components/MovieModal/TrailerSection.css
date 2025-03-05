@@ -1,0 +1,109 @@
+.movie-modal-trailer {
+  margin-top: 20px;
+}
+
+.movie-modal-trailer h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #f44336;
+  font-size: 1.2rem;
+  border: none;
+  padding: 0;
+}
+
+.trailer-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #000;
+}
+
+.trailer-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.trailer-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.trailer-play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.trailer-play-overlay:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.trailer-play-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 68px;
+  height: 48px;
+  transition: transform 0.2s;
+  position: relative;
+}
+
+.trailer-thumbnail:hover .trailer-play-button {
+  transform: scale(1.1);
+}
+
+.trailer-play-button-bg {
+  transition: fill 0.2s;
+}
+
+.trailer-thumbnail:hover .trailer-play-button-bg {
+  fill: #ff0000;
+}
+
+@media (max-width: 768px) {
+  .trailer-play-button {
+    width: 60px;
+    height: 42px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trailer-play-button {
+    width: 48px;
+    height: 34px;
+  }
+
+  .movie-modal-trailer h3 {
+    font-size: 1.1rem;
+  }
+}
