@@ -1,147 +1,158 @@
 import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext';
 import './Hero.css';
 
-const Hero = ({ movies = [], onMovieClick }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+const SLIDE_INTERVAL = 8000; // 8 seconds
+
+const Hero = ({ movies, onMovieClick }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
-    if (!movies.length || !isPlaying) return;
-
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % movies.length);
-    }, 6000);
+      nextSlide();
+    }, SLIDE_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [isPlaying, movies.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, movies.length]);
 
-  if (!movies || movies.length === 0) {
-    return (
-      <div className="hero hero-empty">
-        <div className="hero-empty-content">
-          <div className="hero-loading-spinner"></div>
-          <p>Loading featured movies...</p>
-        </div>
-      </div>
+  const nextSlide = () => {
+    if (isTransitioning || movies.length <= 1) return;
+    
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % movies.length);
+    
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 500);
+  };
+
+  const prevSlide = () => {
+    if (isTransitioning || movies.length <= 1) return;
+    
+    setIsTransitioning(true);
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? movies.length - 1 : prevIndex - 1
     );
+    
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 500);
+  };
+
+  const handleDotClick = (index) => {
+    if (isTransitioning || index === currentIndex) return;
+    
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+    
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 500);
+  };
+  
+  if (!movies || movies.length === 0) {
+    return <div className="hero hero-empty"></div>;
   }
 
-  const handleMouseEnter = () => setIsPlaying(false);
-  const handleMouseLeave = () => setIsPlaying(true);
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-    setIsPlaying(false);
-    setTimeout(() => setIsPlaying(true), 5000);
+  const currentMovie = movies[currentIndex];
+  
+  const backgroundStyle = {
+    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url(${currentMovie.backdropImage || currentMovie.image})`,
   };
-
-  const handleHeroClick = () => {
-    if (onMovieClick) {
-      onMovieClick(movies[currentSlide]);
-    }
-  };
-
-  const currentMovie = movies[currentSlide];
-  const formattedRating = typeof currentMovie.rating === 'number'
-    ? currentMovie.rating.toFixed(1)
-    : '0.0';
 
   return (
-    <div
-      className="hero"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        backgroundImage: `url(${currentMovie.backdropImage || currentMovie.image})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <div className="hero-backdrop-overlay" />
-
-      <div className="hero-content">
+    <div className="hero" style={backgroundStyle}>
+      <div className="hero-container">
         <div className="hero-info">
-          <h1 className="hero-title">{currentMovie.title || 'Movie Title'}</h1>
+          <h1 className="hero-title">{currentMovie.title}</h1>
           <div className="hero-meta">
-            <span className="hero-rating">
-              <i className="star-icon">★</i> {formattedRating}
-            </span>
-            {currentMovie.year && <span className="hero-year">{currentMovie.year}</span>}
-
-            <div className="hero-categories">
-              {currentMovie.categories && currentMovie.categories.slice(0, 3).map((category, index) => (
-                <span key={index} className="hero-category">{category}</span>
-              ))}
-            </div>
+            <span className="hero-year">{currentMovie.year}</span>
+            <span className="hero-rating">★ {currentMovie.rating?.toFixed(1)}</span>
+            {currentMovie.runtime && (
+              <span className="hero-runtime">{currentMovie.runtime} {t('minutes')}</span>
+            )}
           </div>
           <p className="hero-description">
-            {currentMovie.plot && currentMovie.plot.length > 200
-              ? `${currentMovie.plot.substring(0, 200)}...`
-              : currentMovie.plot || 'No description available.'}
+            {currentMovie.plot || 'No description available.'}
           </p>
-
           <div className="hero-actions">
-            <button
+            <button 
               className="hero-button primary"
-              onClick={handleHeroClick}
-              aria-label={`View details for ${currentMovie.title}`}
+              onClick={() => onMovieClick(currentMovie)}
             >
-              More Details
+              {t('moreDetails')}
+            </button>
+            {currentMovie.trailerUrl && (
+              <button 
+                className="hero-button secondary"
+                onClick={() => console.log('Play trailer', currentMovie.trailerUrl)}
+              >
+                <span className="play-icon">▶</span> {t('trailer')}
+              </button>
+            )}
+          </div>
+          
+          {/* Left side navigation */}
+          <div className="hero-navigation">
+            <button 
+              className="hero-nav-button prev"
+              onClick={prevSlide}
+              aria-label="Previous movie"
+            >
+              <span className="nav-icon">←</span> {t('prev')}
+            </button>
+            <div className="hero-dots">
+              {movies.slice(0, 10).map((_, index) => (
+                <button
+                  key={index}
+                  className={`hero-dot ${index === currentIndex ? 'active' : ''}`}
+                  onClick={() => handleDotClick(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+            <button 
+              className="hero-nav-button next"
+              onClick={nextSlide}
+              aria-label="Next movie"
+            >
+              {t('next')} <span className="nav-icon">→</span>
             </button>
           </div>
         </div>
-
-        <div className="hero-poster-container">
-          <div className="hero-poster">
-            <img
-              src={currentMovie.image}
-              alt={currentMovie.title}
-              className="hero-poster-image"
+        
+        <div className="hero-poster">
+          <div className={`movie-card-3d ${isTransitioning ? 'transitioning' : ''}`}>
+            <img 
+              src={currentMovie.image || '/images/default-movie.jpg'} 
+              alt={currentMovie.title} 
+              className="movie-poster-img"
             />
-            <div className="hero-poster-rating">
-              {formattedRating}
+            <div className="movie-card-reflection"></div>
+            
+            {/* Right side navigation */}
+            <div className="poster-navigation">
+              <button 
+                className="poster-nav prev" 
+                onClick={prevSlide}
+                aria-label="Previous slide"
+              >
+                ‹
+              </button>
+              <button 
+                className="poster-nav next" 
+                onClick={nextSlide}
+                aria-label="Next slide"
+              >
+                ›
+              </button>
             </div>
           </div>
         </div>
       </div>
-
-      {movies.length > 1 && (
-        <div className="hero-dots">
-          {movies.map((_, index) => (
-            <button
-              key={index}
-              className={`hero-dot ${index === currentSlide ? 'active' : ''}`}
-              onClick={() => goToSlide(index)}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
-      {movies.length > 1 && (
-        <>
-          <button
-            className="hero-nav hero-nav-prev"
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentSlide((prev) => (prev === 0 ? movies.length - 1 : prev - 1));
-            }}
-            aria-label="Previous slide"
-          >
-            &lt;
-          </button>
-          <button
-            className="hero-nav hero-nav-next"
-            onClick={(e) => {
-              e.stopPropagation();
-              setCurrentSlide((prev) => (prev + 1) % movies.length);
-            }}
-            aria-label="Next slide"
-          >
-            &gt;
-          </button>
-        </>
-      )}
     </div>
   );
 };

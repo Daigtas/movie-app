@@ -1,92 +1,69 @@
-import { useEffect, useRef, useState } from 'react';
-import useDebounce from '../../hooks/useDebounce';
-import { searchMovies } from '../../services/api';
+import { useLanguage } from '../context/LanguageContext';
+import { useSearch } from '../context/SearchContext';
 import './SearchBar.css';
 
-const MIN_SEARCH_QUERY_LENGTH = 2;
-
 const SearchBar = ({ onMovieSelect }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape' && isOpen) {
-        closeSearch();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen]);
-
-  const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
-  useEffect(() => {
-    if (debouncedSearchQuery.trim().length >= MIN_SEARCH_QUERY_LENGTH) {
-      performSearch();
-    }
-  }, [debouncedSearchQuery]);
-
-  const performSearch = async () => {
-    if (searchQuery.trim().length < MIN_SEARCH_QUERY_LENGTH) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const results = await searchMovies(searchQuery);
-      setSearchResults(results);
-    } catch (err) {
-      console.error('Error searching movies:', err);
-      setError('Failed to search for movies. Please try again later.');
-      setSearchResults([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const openSearch = () => {
-    setIsOpen(true);
-    setSearchQuery('');
-    setSearchResults([]);
-    setError(null);
-  };
-
-  const closeSearch = () => {
-    setIsOpen(false);
-    setSearchQuery('');
-    setSearchResults([]);
-  };
-
-  const clearSearch = () => {
-    setSearchQuery('');
-    setSearchResults([]);
-  };
+  const {
+    isOpen,
+    searchQuery,
+    searchResults,
+    isLoading,
+    error,
+    inputRef,
+    MIN_SEARCH_QUERY_LENGTH,
+    recentSearches,
+    setSearchQuery,
+    openSearch,
+    closeSearch,
+    clearSearch,
+    selectRecentSearch,
+    deleteRecentSearch,
+    clearAllRecentSearches
+  } = useSearch();
+  
+  const { t } = useLanguage();
 
   const handleMovieClick = (movie) => {
     onMovieSelect(movie);
     closeSearch();
+  };
+
+  const renderRecentSearches = () => {
+    if (recentSearches.length === 0) return null;
+
+    return (
+      <div className="recent-searches">
+        <div className="recent-searches-header">
+          <h3>{t('recentSearches')}</h3>
+          <button 
+            className="clear-all-searches-btn" 
+            onClick={clearAllRecentSearches}
+            aria-label={t('clearAll')}
+          >
+            {t('clearAll')}
+          </button>
+        </div>
+        <ul className="recent-searches-list">
+          {recentSearches.map((query, index) => (
+            <li key={index} className="recent-search-item">
+              <button 
+                className="recent-search-query" 
+                onClick={() => selectRecentSearch(query)}
+              >
+                {query}
+              </button>
+              <button 
+                className="delete-search-btn" 
+                onClick={() => deleteRecentSearch(query)}
+                aria-label={`Delete ${query} from recent searches`}
+              >
+                ×
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   };
 
   const renderSearchResults = () => {
@@ -102,23 +79,26 @@ const SearchBar = ({ onMovieSelect }) => {
       return (
         <div className="search-message">
           <div className="search-loading-spinner"></div>
-          <p>Searching...</p>
+          <p>{t('searching')}</p>
         </div>
       );
     }
 
     if (searchQuery.trim().length < MIN_SEARCH_QUERY_LENGTH) {
       return (
-        <div className="search-message">
-          <p>Type at least {MIN_SEARCH_QUERY_LENGTH} characters to search</p>
-        </div>
+        <>
+          <div className="search-message">
+            <p>{t('searchMinChars', MIN_SEARCH_QUERY_LENGTH)}</p>
+          </div>
+          {renderRecentSearches()}
+        </>
       );
     }
 
     return (
       <>
         <h2 className="search-results-title">
-          {searchResults.length} results for "{searchQuery}"
+          {t('searchResults', searchResults.length, searchQuery)}
         </h2>
         <div className="search-results-grid">
           {searchResults.map((movie) => (
@@ -148,20 +128,13 @@ const SearchBar = ({ onMovieSelect }) => {
     );
   };
 
-  const SearchButton = ({ openSearch }) => (
-    <button className="search-button" onClick={openSearch} aria-label="Search">
+  const SearchButton = () => (
+    <button className="search-button" onClick={openSearch} aria-label={t('search')}>
       🔍
     </button>
   );
 
-  const SearchOverlay = ({
-    inputRef,
-    searchQuery,
-    setSearchQuery,
-    clearSearch,
-    closeSearch,
-    renderSearchResults,
-  }) => (
+  const SearchOverlay = () => (
     <div className="search-overlay">
       <div className="search-header">
         <div className="search-input-wrapper">
@@ -170,7 +143,7 @@ const SearchBar = ({ onMovieSelect }) => {
             ref={inputRef}
             type="text"
             className="search-input"
-            placeholder="Search for movies..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             autoFocus
@@ -179,7 +152,7 @@ const SearchBar = ({ onMovieSelect }) => {
             <button
               className="search-clear-button"
               onClick={clearSearch}
-              aria-label="Clear search"
+              aria-label={t('clearSearch')}
             >
               ×
             </button>
@@ -188,7 +161,7 @@ const SearchBar = ({ onMovieSelect }) => {
         <button
           className="search-close-button"
           onClick={closeSearch}
-          aria-label="Close search"
+          aria-label={t('close')}
         >
           ×
         </button>
@@ -201,17 +174,8 @@ const SearchBar = ({ onMovieSelect }) => {
 
   return (
     <>
-      <SearchButton openSearch={openSearch} />
-      {isOpen && (
-        <SearchOverlay
-          inputRef={inputRef}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          clearSearch={clearSearch}
-          closeSearch={closeSearch}
-          renderSearchResults={renderSearchResults}
-        />
-      )}
+      <SearchButton />
+      {isOpen && <SearchOverlay />}
     </>
   );
 };

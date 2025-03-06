@@ -6,7 +6,9 @@ import Hero from './Components/Header/Hero/Hero';
 import Modal from './Components/Modal/Modal';
 import TrailerModal from './Components/Modal/TrailerModal';
 import MovieSection from './Components/MovieSection';
+import { LanguageProvider, useLanguage } from './Components/context/LanguageContext';
 import { ModalProvider, useModal } from './Components/context/ModalContext';
+import { SearchProvider } from './Components/context/SearchContext';
 import {
   getMovieDetails,
   getNowPlayingMovies,
@@ -27,6 +29,7 @@ const AppContent = () => {
   const { modalMovie, isModalOpen, closeModal, openModal } = useModal();
   const [trailerModalOpen, setTrailerModalOpen] = useState(false);
   const [selectedTrailer, setSelectedTrailer] = useState(null);
+  const { t } = useLanguage();
   
   useEffect(() => {
     const fetchAllMovies = async () => {
@@ -74,6 +77,12 @@ const AppContent = () => {
     }
   };
 
+  const translateCategory = (category) => {
+    const key = category.toLowerCase().replace(/\s+/g, '');
+    
+    return t(key) === key ? category : t(key);
+  };
+
   if (error) {
     return <div className="error-message">{error}</div>;
   }
@@ -87,13 +96,13 @@ const AppContent = () => {
       ) : (
         <div className="hero hero-empty">
           <div className="loading-spinner"></div>
-          <p>Loading featured movies...</p>
+          <p>{t('loadingFeatured')}</p>
         </div>
       )}
       
       <div className="content">
         <MovieSection 
-          title="Popular Movies" 
+          title={t('popular')}
           movies={popularMovies} 
           isLoading={loading} 
           onMovieClick={handleMovieClick}
@@ -101,7 +110,7 @@ const AppContent = () => {
         />
         
         <MovieSection 
-          title="Top Rated Movies" 
+          title={t('topRated')}
           movies={topRatedMovies} 
           isLoading={loading} 
           onMovieClick={handleMovieClick}
@@ -109,7 +118,7 @@ const AppContent = () => {
         />
         
         <MovieSection 
-          title="Now Playing" 
+          title={t('nowPlaying')}
           movies={nowPlayingMovies} 
           isLoading={loading} 
           onMovieClick={handleMovieClick}
@@ -117,7 +126,7 @@ const AppContent = () => {
         />
         
         <MovieSection 
-          title="Upcoming Movies" 
+          title={t('upcoming')}
           movies={upcomingMovies} 
           isLoading={loading} 
           onMovieClick={handleMovieClick}
@@ -148,12 +157,14 @@ const AppContent = () => {
                 
                 <div className="movie-modal-categories">
                   {modalMovie.categories && modalMovie.categories.map((category, index) => (
-                    <span key={index} className="movie-category-tag">{category}</span>
+                    <span key={index} className="movie-category-tag">
+                      {translateCategory(category)}
+                    </span>
                   ))}
                 </div>
                 
                 <div className="movie-modal-plot">
-                  <h3>Synopsis</h3>
+                  <h3>{t('synopsis')}</h3>
                   <p>{modalMovie.plot || 'No description available.'}</p>
                 </div>
                 
@@ -162,7 +173,7 @@ const AppContent = () => {
                     className="watch-trailer-btn"
                     onClick={() => openTrailerModal(modalMovie)}
                   >
-                    <span className="play-icon">▶</span> Watch Trailer
+                    <span className="play-icon">▶</span> {t('trailer')}
                   </button>
                 )}
               </div>
@@ -185,8 +196,12 @@ const AppContent = () => {
 function App() {
   return (
     <ModalProvider>
-      {process.env.NODE_ENV === 'development' && <EnvChecker />}
-      <AppContent />
+      <LanguageProvider>
+        <SearchProvider>
+          {process.env.NODE_ENV === 'development' && <EnvChecker />}
+          <AppContent />
+        </SearchProvider>
+      </LanguageProvider>
     </ModalProvider>
   );
 }

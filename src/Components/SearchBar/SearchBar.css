@@ -295,6 +295,96 @@
   margin: 0;
 }
 
+/* Recent Searches Styling */
+.recent-searches {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.recent-searches-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.recent-searches-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #e0e0e0;
+}
+
+.clear-all-searches-btn {
+  background: none;
+  border: none;
+  color: #ff6b81;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.clear-all-searches-btn:hover {
+  text-decoration: underline;
+}
+
+.recent-searches-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.recent-search-item:last-child {
+  border-bottom: none;
+}
+
+.recent-search-query {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font-size: 1rem;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: calc(100% - 30px);
+}
+
+.recent-search-query:hover {
+  color: #ff6b81;
+}
+
+.delete-search-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.delete-search-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ff6b81;
+}
+
 @media (max-width: 992px) {
   .search-box {
     margin-left: 15px;

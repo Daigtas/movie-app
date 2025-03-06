@@ -1,8 +1,10 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import './Footer.css';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useLanguage();
   
   return (
     <footer className="footer">
@@ -12,48 +14,47 @@ const Footer = () => {
             <span>🎬 Movie App</span>
           </div>
           <p className="footer-description">
-            Browse and discover movies from the TMDB database
+            {t('footerDescription')}
           </p>
           
           <div className="footer-columns">
             <div className="footer-column">
-              <h3>Navigation</h3>
+              <h3>{t('navigation')}</h3>
               <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#movies">Movies</a></li>
-                <li><a href="#top-rated">Top Rated</a></li>
-                <li><a href="#upcoming">Upcoming</a></li>
+                <li><a href="#home">{t('home')}</a></li>
+                <li><a href="#movies">{t('movies')}</a></li>
+                <li><a href="#top-rated">{t('topRated')}</a></li>
+                <li><a href="#upcoming">{t('upcoming')}</a></li>
               </ul>
             </div>
             
             <div className="footer-column">
-              <h3>Categories</h3>
+              <h3>{t('categories')}</h3>
               <ul>
-                <li><a href="#action">Action</a></li>
-                <li><a href="#comedy">Comedy</a></li>
-                <li><a href="#drama">Drama</a></li>
-                <li><a href="#sci-fi">Science Fiction</a></li>
+                <li><a href="#action">{t('action')}</a></li>
+                <li><a href="#comedy">{t('comedy')}</a></li>
+                <li><a href="#drama">{t('drama')}</a></li>
+                <li><a href="#sci-fi">{t('sciFi')}</a></li>
               </ul>
             </div>
             
             <div className="footer-column">
-              <h3>Legal</h3>
+              <h3>{t('legal')}</h3>
               <ul>
-                <li><a href="#terms">Terms of Service</a></li>
-                <li><a href="#privacy">Privacy Policy</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#terms">{t('termsOfService')}</a></li>
+                <li><a href="#privacy">{t('privacyPolicy')}</a></li>
+                <li><a href="#about">{t('aboutUs')}</a></li>
+                <li><a href="#contact">{t('contactUs')}</a></li>
               </ul>
             </div>
           </div>
           
           <div className="footer-bottom">
             <p className="footer-copyright">
-              &copy; {currentYear} Movie App. All rights reserved.
+              &copy; {currentYear} Movie App. {t('allRightsReserved')}
             </p>
             <p className="footer-disclaimer">
-              This product uses the TMDB API but is not endorsed or certified by TMDB. 
-              All movie data and images are provided by 
+              {t('tmdbDisclaimer')}
               <a href="https://www.themoviedb.org/" target="_blank" rel="noreferrer"> The Movie Database</a>.
             </p>
             <div className="tmdb-logo">

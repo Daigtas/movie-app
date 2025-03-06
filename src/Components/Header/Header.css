@@ -441,6 +441,10 @@
   .nav a {
     font-size: 0.9rem;
   }
+
+  .header-actions .language-select-container {
+    display: none;
+  }
 }
 
 @media (max-width: 576px) {
@@ -467,4 +471,15 @@
   .nav ul {
     gap: 10px;
   }
+}
+
+.mobile-menu-language {
+  margin-top: 20px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.header-actions .language-select-container {
+  margin-right: 15px;
 }

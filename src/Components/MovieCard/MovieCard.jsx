@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import './MovieCard.css';
 
 const MovieCard = ({ movie, onClick, onWatchTrailer }) => {
@@ -6,6 +7,7 @@ const MovieCard = ({ movie, onClick, onWatchTrailer }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const imageRef = useRef(null);
+  const { t } = useLanguage();
 
   const handleImageError = () => {
     setImageError(true);
@@ -69,7 +71,7 @@ const MovieCard = ({ movie, onClick, onWatchTrailer }) => {
               }}
               aria-label={`View details for ${movie.title}`}
             >
-              Details
+              {t('details')}
             </button>
 
             {movie.trailerUrl && (
@@ -78,7 +80,7 @@ const MovieCard = ({ movie, onClick, onWatchTrailer }) => {
                 onClick={handleTrailerClick}
                 aria-label={`Watch trailer for ${movie.title}`}
               >
-                <span className="play-icon">▶</span> Watch Trailer
+                <span className="play-icon">▶</span> {t('trailer')}
               </button>
             )}
           </div>

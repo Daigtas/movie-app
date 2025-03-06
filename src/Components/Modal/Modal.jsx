@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
+import { useLanguage } from '../context/LanguageContext';
 import './Modal.css';
 
 const modalRoot = document.getElementById('modal-root') || document.body;
 
 const Modal = ({ isOpen, onClose, title, children }) => {
   const modalRef = useRef(null);
+  const { t } = useLanguage();
   
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -45,7 +47,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           <button 
             className="modal-close" 
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('close')}
           >
             &times;
           </button>

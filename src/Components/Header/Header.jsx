@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { searchMovies } from '../../services/api';
+import LanguageSelect from '../LanguageSelect';
+import { useLanguage } from '../context/LanguageContext';
 import './Header.css';
 
 const Header = () => {
@@ -9,6 +11,7 @@ const Header = () => {
   const [showResults, setShowResults] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -95,7 +98,7 @@ const Header = () => {
           <div className="search-input-container">
             <input
               type="text"
-              placeholder="Search movies..."
+              placeholder={t('searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={handleSearchFocus}
@@ -141,13 +144,14 @@ const Header = () => {
         
         <nav className="nav">
           <ul>
-            <li><a href="#popular">Popular</a></li>
-            <li><a href="#top-rated">Top Rated</a></li>
-            <li><a href="#upcoming">Upcoming</a></li>
+            <li><a href="#popular">{t('popular')}</a></li>
+            <li><a href="#top-rated">{t('topRated')}</a></li>
+            <li><a href="#upcoming">{t('upcoming')}</a></li>
           </ul>
         </nav>
 
         <div className="header-actions">
+          <LanguageSelect />
           <button 
             className="mobile-menu-toggle" 
             onClick={toggleMobileMenu}
@@ -166,23 +170,25 @@ const Header = () => {
       <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
         <ul className="mobile-nav-menu">
           <li className="mobile-nav-item">
-            <a href="#home" className="mobile-nav-link" onClick={closeMobileMenu}>Home</a>
+            <a href="#home" className="mobile-nav-link" onClick={closeMobileMenu}>{t('home')}</a>
           </li>
           <li className="mobile-nav-item">
-            <a href="#movies" className="mobile-nav-link" onClick={closeMobileMenu}>Movies</a>
+            <a href="#movies" className="mobile-nav-link" onClick={closeMobileMenu}>{t('movies')}</a>
           </li>
           <li className="mobile-nav-item">
-            <a href="#tv-shows" className="mobile-nav-link" onClick={closeMobileMenu}>TV Shows</a>
+            <a href="#tv-shows" className="mobile-nav-link" onClick={closeMobileMenu}>{t('tvShows')}</a>
           </li>
           <li className="mobile-nav-item">
-            <a href="#new" className="mobile-nav-link" onClick={closeMobileMenu}>New & Popular</a>
+            <a href="#new" className="mobile-nav-link" onClick={closeMobileMenu}>{t('trending')}</a>
           </li>
           <li className="mobile-nav-item">
-            <a href="#my-list" className="mobile-nav-link" onClick={closeMobileMenu}>My List</a>
+            <a href="#my-list" className="mobile-nav-link" onClick={closeMobileMenu}>{t('favorites')}</a>
           </li>
         </ul>
         
-    
+        <div className="mobile-menu-language">
+          <LanguageSelect />
+        </div>
       </div>
       
       <div 
