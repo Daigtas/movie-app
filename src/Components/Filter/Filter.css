@@ -1,0 +1,171 @@
+.filter-container {
+  background-color: #1f1f1f;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.filter-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #282828;
+  border-bottom: 1px solid #333;
+}
+
+.filter-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #f44336;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.filter-header h3::before {
+  content: "🔍";
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+}
+
+.filter-button {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: color 0.2s;
+}
+
+.filter-button:hover {
+  color: #f44336;
+}
+
+.clear-button {
+  margin-right: 10px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.clear-button:hover {
+  opacity: 1;
+}
+
+.filter-toggle {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  transition: background-color 0.3s;
+}
+
+.filter-toggle:hover {
+  background-color: #f44336;
+}
+
+.filter-options {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.filter-options.expanded {
+  max-height: 200px;
+  padding: 20px;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 8px;
+}
+
+.filter-select {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='6'><path d='M0,0 L12,0 L6,6 Z' fill='%23999'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #f44336;
+}
+
+.filter-badge {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.filter-active-badge {
+  background-color: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.filter-count {
+  background-color: #f44336;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  margin-left: 6px;
+}
+
+@media (max-width: 768px) {
+  .filter-options {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .filter-options.expanded {
+    max-height: 300px;
+  }
+
+  .filter-badge {
+    justify-content: flex-start;
+  }
+}

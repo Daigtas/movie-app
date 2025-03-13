@@ -1,0 +1,33 @@
+.info-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.info-content {
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.info-content h2 {
+  color: #f44336;
+  margin-top: 30px;
+}
+
+.info-content ul {
+  padding-left: 20px;
+  margin: 15px 0;
+}
+
+.info-content li {
+  margin-bottom: 10px;
+  color: #e0e0e0;
+}
+
+.info-content p {
+  line-height: 1.6;
+  color: #e0e0e0;
+  margin-bottom: 15px;
+}
