@@ -1,7 +1,6 @@
 # 🎬 Movie Explorer App
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![TMDB API](https://img.shields.io/badge/TMDB_API-01D277?style=for-the-badge&logo=themoviedatabase&logoColor=white)
 
 A responsive movie discovery application powered by The Movie Database (TMDB) API, featuring modern React patterns and TypeScript safety.
