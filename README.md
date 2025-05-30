@@ -44,8 +44,6 @@ VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
 ├── styles/         # Tailwind config and CSS
 └── utils/          # Helper functions
 
-🖼️ Screenshots
-<div align="center"> <img src="./public/screenshots/home-light.png" width="45%" alt="Homepage Light Mode"> <img src="./public/screenshots/detail-dark.png" width="45%" alt="Details Dark Mode"> </div>
 📝 Notes from Code Analysis
 
     Performance Optimizations:
