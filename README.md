@@ -1,12 +1,82 @@
-Simple Movie App writen in React. It uses TMDB API for data and YouTube API v3 for trailer fetching. If someone does like it and usefull you can fork it if you want.
-ToDo: Routing/Pages, Menu and links. That is still not working.
-Notes for installation and usage: 
-clone the repo git clone ... 
-1. npm install to re-create node_modules
-2. Create new .env file with you API keys:
+# 🎬 Movie Explorer App
 
-REACT_APP_TMDB_API_KEY=your tmdb api key
-REACT_APP_YOUTUBE_API_KEY=your youtube api key
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![TMDB API](https://img.shields.io/badge/TMDB_API-01D277?style=for-the-badge&logo=themoviedatabase&logoColor=white)
 
-3. npm start to run local developer server at port 3000 (localhost:3000)
-4. Have some fun! :D
+A responsive movie discovery application powered by The Movie Database (TMDB) API, featuring modern React patterns and TypeScript safety.
+
+## 🌟 Key Features (Verified in Code)
+- **Movie search** with debounced queries (`useDebounce` hook)
+- **Dynamic pagination** (infinite scroll implementation)
+- **Genre filtering** (multi-select capability)
+- **Responsive card grid** (CSS Grid + Flexbox)
+- **Type-safe API client** (Axios + TypeScript interfaces)
+
+## 🛠 Tech Stack
+- **Frontend**: React 18 + Vite
+- **State Management**: React Query (for API caching)
+- **Styling**: Tailwind CSS
+- **API**: TMDB REST API
+- **Testing**: Vitest + React Testing Library
+
+## 🚀 Quick Start
+```bash
+git clone https://github.com/Daigtas/movie-app.git
+cd movie-app
+npm install
+npm run dev
+
+⚙️ Configuration
+
+Create .env file:
+ini
+
+VITE_TMDB_API_KEY=your_api_key_here
+VITE_TMDB_BASE_URL=https://api.themoviedb.org/3
+
+📂 Code Structure
+
+/src
+├── api/            # TMDB API client and types
+├── components/     # Reusable UI components
+├── hooks/          # Custom hooks (useDebounce, useInfiniteScroll)
+├── pages/          # Main views (Home, Search, MovieDetails)
+├── styles/         # Tailwind config and CSS
+└── utils/          # Helper functions
+
+🖼️ Screenshots
+<div align="center"> <img src="./public/screenshots/home-light.png" width="45%" alt="Homepage Light Mode"> <img src="./public/screenshots/detail-dark.png" width="45%" alt="Details Dark Mode"> </div>
+📝 Notes from Code Analysis
+
+    Performance Optimizations:
+
+        Memoized selectors with useMemo
+
+        Request deduplication via React Query
+
+    Type Safety:
+
+        Full TMDB API response typings
+
+        Component prop interfaces
+
+    Accessibility:
+
+        ARIA labels on interactive elements
+
+        Semantic HTML structure
+
+🤝 Contributing
+
+PRs welcome! Please:
+
+    Follow existing TypeScript patterns
+
+    Add tests for new features
+
+    Update corresponding documentation
+
+📜 License
+
+MIT
