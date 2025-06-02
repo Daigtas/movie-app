@@ -4,6 +4,7 @@
 ![TMDB API](https://img.shields.io/badge/TMDB_API-01D277?style=for-the-badge&logo=themoviedatabase&logoColor=white)
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://weather.sandboxas.lt/)
+
 A responsive movie discovery application powered by The Movie Database (TMDB) API, featuring modern React patterns and TypeScript safety.
 ![Screenshot](https://movie.sandboxas.lt/movie.png)
 ## 🌟 Key Features (Verified in Code)
