@@ -5,7 +5,7 @@
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://weather.sandboxas.lt/)
 A responsive movie discovery application powered by The Movie Database (TMDB) API, featuring modern React patterns and TypeScript safety.
-![Screen](https://movie.sandboxas.lt/movie.png)
+![Screenshot](https://movie.sandboxas.lt/movie.png)
 ## 🌟 Key Features (Verified in Code)
 - **Movie search** with debounced queries (`useDebounce` hook)
 - **Dynamic pagination** (infinite scroll implementation)
